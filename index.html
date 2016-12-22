@@ -21,7 +21,7 @@
     </p>
     <div class="row">
         <div class="col-md-10">
-            <div id="container" style="min-width: 310px; height: 320px; margin: 0 auto"></div>
+            <div id="container" style="min-width: 310px; height: 450px; margin: 0 auto"></div>
         </div>
         <div class="col-md-2">
             Голубая линия &mdash; это реальная температура.<br>
@@ -60,7 +60,7 @@
 
             Highcharts.chart('container', {
                 title: {
-                    text: 'ноябрь - декабрь'
+                    text: 'График дневной температуры (ноябрь - декабрь)'
                 },
                 xAxis: {
                     type: 'datetime'
@@ -78,7 +78,7 @@
                 legend: {},
                 series: [{
                     name: 'Реальная температура',
-                    data: real,
+                    data: real.slice(7),
                     zIndex: 2,
                     marker: {
                         fillColor: 'white',
@@ -87,7 +87,7 @@
                     }
                 }, {
                     name: 'Диапазон предсказаний',
-                    data: ranges,
+                    data: ranges.slice(6, ranges.length-7),
                     type: 'arearange',
                     lineWidth: 0,
                     linkedTo: ':previous',
@@ -101,8 +101,10 @@
                         point: {
                             events: {
                                 click: function () {
-                                    $('#container2').highcharts().destroy();
-                                    Highcharts.chart('container2', drowChart(this.category));
+                                    if (this.colorIndex !== undefined) {
+                                        $('#container2').highcharts().destroy();
+                                        Highcharts.chart('container2', drowChart(this.category));
+                                    }
                                 }
                             }
                         }
